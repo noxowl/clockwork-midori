@@ -14,6 +14,6 @@ This application is under development.
 
 # TODO
 - [ ] Add timer system
-- [ ] Add keypad event handling
+- [X] Add keypad event handling
 - [ ] Add pulldown interaction UI
 - [ ] Delegate structure for lifecycle handling. like unity monobehaviour

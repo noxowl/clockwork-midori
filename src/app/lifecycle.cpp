@@ -7,6 +7,7 @@ bool LifecycleManager::initialized;
 Inputs LifecycleManager::inputs;
 
 CWMidori::Timer LifecycleManager::midori_timer;
+CWMidori::Logic LifecycleManager::midori_logic;
 
 LifecycleManager::LifecycleManager() {
     LifecycleManager::initialized = false;
@@ -29,10 +30,14 @@ void LifecycleManager::callStart() {
 
 void LifecycleManager::callInput() {
     inputs.peekBuffer(1);
+    inputs.readLatch();
 }
 
 void LifecycleManager::callUpdate() {
-    midori_timer.reduceTime();
+    midori_logic.onProcessing(midori_timer);
+    midori_logic.onHold(inputs);
+    midori_logic.onPull(inputs, midori_timer);
+    midori_logic.onRelease(inputs);
 }
 
 void LifecycleManager::callRender() {
@@ -45,6 +50,9 @@ void LifecycleManager::callGUI() {
         // pspDebugScreenPrintf("FreeMem in MiB: %dMiB\n", sceKernelTotalFreeMemSize()/(1024*1024));
     pspDebugScreenPrintf("Analog X = %d\n", inputs.axisX()); 
     pspDebugScreenPrintf("Analog Y = %d\n", inputs.axisY());
-    pspDebugScreenPrintf("button = %d\n", inputs.button());
+    pspDebugScreenPrintf("button = %d\n", inputs.rawPressedButton());
+    pspDebugScreenPrintf("holding = %d\n", midori_logic.isHolding());
+    pspDebugScreenPrintf("pulling = %d\n", midori_logic.isPulling());
+    pspDebugScreenPrintf("hands = %d\n", midori_logic.currentHands());
     pspDebugScreenPrintf("timer = %ld\n", midori_timer.currentTimeLeft());
 }

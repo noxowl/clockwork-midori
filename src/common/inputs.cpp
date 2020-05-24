@@ -1,6 +1,7 @@
 #include "include/common/inputs.hpp"
 
 SceCtrlData Inputs::inputData;
+SceCtrlLatch Inputs::inputLatch;
 
 Inputs::Inputs() {
     sceCtrlSetSamplingCycle(0);
@@ -10,8 +11,28 @@ Inputs::Inputs() {
 Inputs::~Inputs() {
 }
 
-void Inputs::peekBuffer(int count) {
+void Inputs::peekBuffer(const int count) {
     sceCtrlPeekBufferPositive(&inputData, count);
+}
+
+void Inputs::readLatch() {
+    sceCtrlReadLatch(&inputLatch);
+}
+
+bool Inputs::isHold(const int button) {
+    return (inputLatch.uiPress & button);
+}
+
+bool Inputs::isDown(const int button) {
+    return inputLatch.uiMake & button;
+}
+
+bool Inputs::isUp(const int button) {
+    return inputLatch.uiBreak & button;
+}
+
+int Inputs::rawPressedButton() {
+    return inputLatch.uiMake;
 }
 
 int Inputs::button() {

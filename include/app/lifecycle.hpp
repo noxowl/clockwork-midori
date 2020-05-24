@@ -1,7 +1,8 @@
-#ifndef COMMON_LIFECYCLE_H
-#define COMMON_LIFECYCLE_H
+#ifndef CWMIDORI_APP_LIFECYCLE_H_
+#define CWMIDORI_APP_LIFECYCLE_H_
 #include "include/common/inputs.hpp"
 #include "include/app/timer.hpp"
+#include "include/app/logic.hpp"
 
 class ILifecycle {
     public:
@@ -15,20 +16,16 @@ class ILifecycle {
         virtual void onPause() = 0;
         virtual void onDisable() = 0;
         virtual void onDestroy() = 0;
+        
     protected:
         virtual ~ILifecycle() {}
 };
 
 class LifecycleManager {
-    private:
-        static bool initialized;
-        static Inputs inputs;
-
-        static CWMidori::Timer midori_timer;
-
     public:
         LifecycleManager();
         ~LifecycleManager();
+
         void init();
         void callAwake();
         void callStart();
@@ -39,6 +36,13 @@ class LifecycleManager {
         void callPause();
         void callDisable();
         void callDestroy();
+
+    private:
+        static bool initialized;
+        static Inputs inputs;
+
+        static CWMidori::Timer midori_timer;
+        static CWMidori::Logic midori_logic;
 };
 
 #endif

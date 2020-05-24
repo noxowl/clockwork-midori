@@ -14,6 +14,14 @@ long CWMidori::Timer::currentTimeLeft() {
     return time;
 }
 
+void CWMidori::Timer::increaseTime(int speed) {
+    if (speed == 1) {
+        ++time;
+    } else {
+        time += pow(10, speed);
+    }
+}
+
 void CWMidori::Timer::reduceTime() {
     if (time > 0) {
         --time;

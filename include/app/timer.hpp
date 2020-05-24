@@ -1,5 +1,7 @@
-#ifndef MIDORI_CORE_TIMER_H
-#define MIDORI_CORE_TIMER_H
+#ifndef CWMIDORI_APP_TIMER_H
+#define CWMIDORI_APP_TIMER_H
+
+#include <cmath>
 // #include "include/common/lifecycle.hpp"
 
 namespace CWMidori {
@@ -18,15 +20,16 @@ namespace CWMidori {
     //     long time;
     // };
     class Timer {
-        private:
-            long time;
-
         public:
             Timer();
             ~Timer();
             void init(long targetTime);
+            void increaseTime(int speed);
             void reduceTime();
             long currentTimeLeft();
+        
+        private:
+            long time;
     };
 }
 

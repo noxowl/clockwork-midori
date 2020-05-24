@@ -11,12 +11,13 @@ vpath %.o bin/lib
 PSP_OBJECTS = \
 	$(addprefix src/common/, \
 		kernel_callback.o \
-		lifecycle.o \
 		inputs.o \
 	)
 APPLICATION_OBJECTS = \
 	$(addprefix src/app/, \
+		lifecycle.o \
 		timer.o \
+		logic.o \
 	)
 
 OBJECTS = \
@@ -31,7 +32,7 @@ CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
 LIBDIR = 
-LIBS =
+LIBS = -lm
 LDFLAGS =
 
 EXTRA_TARGETS = EBOOT.PBP
