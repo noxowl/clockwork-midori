@@ -31,7 +31,7 @@ bool Inputs::isUp(const int button) {
     return inputLatch.uiBreak & button;
 }
 
-int Inputs::rawPressedButton() {
+int Inputs::unsafePressedButton() {
     return inputLatch.uiMake;
 }
 

@@ -15,7 +15,7 @@ class Inputs {
         bool isUp(const int button);
         bool isDown(const int button);
 
-        int rawPressedButton();
+        int unsafePressedButton();
         int button();
         char axisX();
         char axisY();

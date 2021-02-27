@@ -6,8 +6,8 @@
 bool LifecycleManager::initialized;
 Inputs LifecycleManager::inputs;
 
-CWMidori::Timer LifecycleManager::midori_timer;
-CWMidori::Logic LifecycleManager::midori_logic;
+CWMidori::Timer LifecycleManager::timer;
+CWMidori::Logic LifecycleManager::logic;
 
 LifecycleManager::LifecycleManager() {
     LifecycleManager::initialized = false;
@@ -19,10 +19,9 @@ LifecycleManager::~LifecycleManager() {
 void LifecycleManager::init() {
     if (!LifecycleManager::initialized) {
         LifecycleManager::initialized = true;
-        LifecycleManager::midori_timer.init(500);
+        LifecycleManager::timer.init();
         pspDebugScreenPrintf("clockwork midori\n");
     }
-    
 }
 
 void LifecycleManager::callStart() {
@@ -34,10 +33,11 @@ void LifecycleManager::callInput() {
 }
 
 void LifecycleManager::callUpdate() {
-    midori_logic.onProcessing(midori_timer);
-    midori_logic.onHold(inputs);
-    midori_logic.onPull(inputs, midori_timer);
-    midori_logic.onRelease(inputs);
+    timer.fetchDeviceTime();
+    logic.onRelease(inputs, timer);
+    logic.onPull(inputs, timer);
+    logic.onHold(inputs, timer);
+    logic.onProcessing(timer);
 }
 
 void LifecycleManager::callRender() {
@@ -47,12 +47,12 @@ void LifecycleManager::callRender() {
 
 void LifecycleManager::callGUI() {
     pspDebugScreenPrintf("FreeMem in KiB: %dKiB\n", sceKernelTotalFreeMemSize()/1024);
-        // pspDebugScreenPrintf("FreeMem in MiB: %dMiB\n", sceKernelTotalFreeMemSize()/(1024*1024));
+    pspDebugScreenPrintf("FreeMem in MiB: %dMiB\n", sceKernelTotalFreeMemSize()/(1024*1024));
     pspDebugScreenPrintf("Analog X = %d\n", inputs.axisX()); 
     pspDebugScreenPrintf("Analog Y = %d\n", inputs.axisY());
-    pspDebugScreenPrintf("button = %d\n", inputs.rawPressedButton());
-    pspDebugScreenPrintf("holding = %d\n", midori_logic.isHolding());
-    pspDebugScreenPrintf("pulling = %d\n", midori_logic.isPulling());
-    pspDebugScreenPrintf("hands = %d\n", midori_logic.currentHands());
-    pspDebugScreenPrintf("timer = %ld\n", midori_timer.currentTimeLeft());
+    pspDebugScreenPrintf("button = %d\n", inputs.unsafePressedButton());
+    pspDebugScreenPrintf("holding = %d\n", logic.isHolding());
+    pspDebugScreenPrintf("pulling = %d\n", logic.isPulling());
+    pspDebugScreenPrintf("hands = %d\n", logic.currentHands());
+    pspDebugScreenPrintf("timer = %ld\n", timer.currentTimeLeft());
 }

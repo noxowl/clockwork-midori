@@ -13,7 +13,8 @@ This application is under development.
 * Boost(maybe use later)
 
 # TODO
-- [ ] Add timer system
+- [X] Add timer system
 - [X] Add keypad event handling
 - [ ] Add pulldown interaction UI
-- [ ] Delegate structure for lifecycle handling. like unity monobehaviour
+- [ ] Add sound effect
+- [ ] ~~Delegate structure for lifecycle handling. like unity monobehaviour~~
